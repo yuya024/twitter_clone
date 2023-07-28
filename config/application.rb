@@ -18,7 +18,8 @@ module Myapp
     # timezone
     config.time_zone = 'Tokyo'
     config.active_record.default_timezone = :local
-
+    # field_with_errorsタグを読み込まないようにする
+    config.action_view.field_error_proc = proc { |html_tag, _instance| html_tag }
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
