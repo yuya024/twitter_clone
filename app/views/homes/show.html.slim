@@ -1,0 +1,4 @@
+div.d-flex.justify-content-start
+  h1.mx-2 = "#{current_user.user_name}さん"
+  = link_to 'ログアウト', destroy_user_session_path, data: { "turbo-method": :delete }
+button.py-2.mb-2.btn.btn-outline-secondary.rounded-3.mx-2 つぶやき
