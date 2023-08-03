@@ -11,11 +11,10 @@ module Users
     # end
 
     # POST /resource
-    # rubocop:disable Lint/UselessMethodDefinition
     def create
+      build_resource(sign_up_params)
       super
     end
-    # rubocop:enable Lint/UselessMethodDefinition
 
     # GET /resource/edit
     # def edit
@@ -42,6 +41,12 @@ module Users
     # end
 
     protected
+
+    # validationエラーを防ぐために、通常のサインアップ時にuidを追加する
+    def build_resource(hash = {})
+      hash[:uid] = SecureRandom.uuid
+      super
+    end
 
     # If you have extra params to permit, append them to the sanitizer.
     def configure_sign_up_params
