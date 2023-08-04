@@ -69,6 +69,7 @@ end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem 'dotenv-rails'
   gem 'html2slim'
   gem 'htmlbeautifier'
   gem 'letter_opener_web'

@@ -20,9 +20,6 @@ services:
       - db
     stdin_open: true
     tty: true
-    environment:
-      - GITHUB_ID=56e5cd5b60d6bd06af02
-      - GITHUB_SECRET=aed1c977addb3224c32cd8619892614ee38d0e9a
   js:
     image: rails_template:latest
     command: yarn build --watch
