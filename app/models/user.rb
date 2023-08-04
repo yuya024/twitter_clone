@@ -21,8 +21,8 @@ class User < ApplicationRecord
     user.email = auth.info.email
     user.password = Devise.friendly_token(DEFAULT_PASSWORD_LENGTH) if user.password.blank?
     user.password_confirmation = user.password if user.password.blank?
-    user.phone_number = DEFAULT_PHONE_NUMBER if user.phone_number.blank?
-    user.birthdate = Time.zone.today if user.birthdate.blank?
+    user.phone_number = DEFAULT_PHONE_NUMBER unless user.phone_number?
+    user.birthdate = Time.zone.today unless user.birthdate?
     # メール認証をスキップする
     user.skip_confirmation!
     user.save!
