@@ -10,7 +10,7 @@ html
     = javascript_include_tag "application", "data-turbo-track": "reload", defer: true
   body
     - if notice.present?
-      p.notice.alert.alert-info = notice 
+      p.notice.alert.alert-info = notice
     - elsif alert.present?
       p.alert.alert-danger.mb-0 = alert
     = yield

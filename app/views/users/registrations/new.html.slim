@@ -37,9 +37,9 @@ div.modal.modal-sheet.position-static.d-block.bg-body-secondary.p-4.py-md-5 tabi
           = f.submit "新規登録", class: "w-100 mb-2 btn btn-lg rounded-3 btn-primary"
           hr.my-4
           h2.fs-5.fw-bold.mb-3 または
-          buton.w-100.py-2.mb-2.btn.btn-outline-secondary.rounded-3 type="submit"
-            svg.bi.me-1[width="16" height="16"]
-              use[xlink:href="#github"]
-            | GitHubで新規登録
+        = button_to user_github_omniauth_authorize_path, method: :post, data: { turbo: false }, class: "w-100 py-2 mb-2 btn btn-outline-secondary rounded-3"
+          svg.bi.me-1[width="16" height="16"]
+            use[xlink:href="#github"]
+          | GitHubで新規登録
         = link_to "ログイン", new_session_path(resource_name)
         / = render "users/shared/links"

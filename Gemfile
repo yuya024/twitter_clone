@@ -49,6 +49,8 @@ gem 'bootsnap', require: false
 
 gem 'devise'
 gem 'omniauth'
+gem 'omniauth-github'
+gem 'omniauth-rails_csrf_protection'
 gem 'rails-i18n'
 gem 'slim-rails'
 
@@ -67,6 +69,7 @@ end
 
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem 'dotenv-rails'
   gem 'html2slim'
   gem 'htmlbeautifier'
   gem 'letter_opener_web'
