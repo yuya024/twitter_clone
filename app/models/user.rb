@@ -12,6 +12,10 @@ class User < ApplicationRecord
   validates :birthdate, presence: true
   validates :uid, presence: true, uniqueness: { scope: :provider }
 
+  has_many :tweets, dependent: :destroy
+  has_many :follows, dependent: :destroy
+  has_one_attached :profile_image
+
   DEFAULT_PHONE_NUMBER = '00000000000'
   DEFAULT_PASSWORD_LENGTH = 10
 

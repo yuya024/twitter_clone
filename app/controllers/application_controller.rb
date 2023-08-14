@@ -8,4 +8,8 @@ class ApplicationController < ActionController::Base
     home_path(resource)
   end
   # rails_best_practices: enableRemoveUnusedMethodsInControllersCheck
+
+  def sigin_in_required
+    redirect_to new_user_session_path unless user_signed_in?
+  end
 end
