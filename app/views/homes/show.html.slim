@@ -42,7 +42,7 @@ div.d-flex.mt-3.pb-2.border-bottom style="margin-right: -12px; margin-left: -12p
       = image_tag tweet.user.profile_image.variant(resize_to_fill: [42, 42]).processed, class:'rounded-circle mx-1'
     div.col-md-11
         div.d-flex
-          div.me-2 
+          div.me-2
             strong = tweet.user_name
           div.text-black-50
             = tweet.created_at.strftime('%Y/%m/%d %H:%M:%S')
