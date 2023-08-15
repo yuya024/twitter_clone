@@ -21,13 +21,8 @@ my_account.birthdate = Time.zone.today
 my_account.skip_confirmation!
 my_account.save!
 unless my_account.profile_image.attached?
-  if Rails.env.development?
-    my_account.profile_image.attach(io: File.open(Rails.root.join('app/assets/images/nissy.jpg')),
-                                    filename: 'nissy.jpg')
-  else
-    image_data = URI.open('https://heroku-rails-twitter-clone.s3.amazonaws.com/nissy.jpg').read
-    my_account.profile_image.attach(io: StringIO.new(image_data), filename: 'nissy.jpg')
-  end
+  my_account.profile_image.attach(io: File.open(Rails.root.join('app/assets/images/nissy.jpg')),
+                                  filename: 'nissy.jpg')
 end
 
 # mainとフォロー関係にあるユーザ
@@ -42,13 +37,8 @@ ActiveRecord::Base.transaction do
     user.skip_confirmation!
     user.save!
     unless user.profile_image.attached?
-      if Rails.env.development?
-        user.profile_image.attach(io: File.open(Rails.root.join('app/assets/images/default_profile.jpg')),
-                                  filename: 'default_profile.jpg')
-      else
-        image_data = URI.open('https://heroku-rails-twitter-clone.s3.amazonaws.com/default_profile.jpg').read
-        user.profile_image.attach(io: StringIO.new(image_data), filename: 'default_profile.jpg')
-      end
+      user.profile_image.attach(io: File.open(Rails.root.join('app/assets/images/default_profile.jpg')),
+                                filename: 'default_profile.jpg')
     end
 
     Follow.find_or_create_by!(user_id: my_account.id, followee_id: user.id)
@@ -69,13 +59,8 @@ ActiveRecord::Base.transaction do
     user.skip_confirmation!
     user.save!
     unless user.profile_image.attached?
-      if Rails.env.development?
-        user.profile_image.attach(io: File.open(Rails.root.join('app/assets/images/default_profile.jpg')),
-                                  filename: 'default_profile.jpg')
-      else
-        image_data = URI.open('https://heroku-rails-twitter-clone.s3.amazonaws.com/default_profile.jpg').read
-        user.profile_image.attach(io: StringIO.new(image_data), filename: 'default_profile.jpg')
-      end
+      user.profile_image.attach(io: File.open(Rails.root.join('app/assets/images/default_profile.jpg')),
+                                filename: 'default_profile.jpg')
     end
 
     user.tweets.create!(content: content.sample)
