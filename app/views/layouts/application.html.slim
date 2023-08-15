@@ -29,7 +29,7 @@ html
     div.container
       div.row
         = render 'shared/sidebar'
-        
+
         div class="col-md-#{controller_name.in?(%w[registrations sessions]) ? 12 : 8} border-end"
           - if notice.present?
             p.notice.alert.alert-info = notice

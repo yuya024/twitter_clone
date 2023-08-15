@@ -21,7 +21,7 @@ div.d-flex.mt-3.pb-2.border-bottom style="margin-right: -12px; margin-left: -12p
     - if current_user.profile_image.attached?
       = image_tag current_user.profile_image.variant(resize_to_fill: [42, 42]).processed, class:'rounded-circle mx-1'
     - else
-      a href="#" class="d-flex align-items-center" 
+      a href="#" class="d-flex align-items-center"
         img src="https://github.com/mdo.png" alt="" width="42" height="42" class="rounded-circle mx-1"
   div.col-md-11
     form
@@ -43,12 +43,11 @@ div.d-flex.mt-3.pb-2.border-bottom style="margin-right: -12px; margin-left: -12p
     div.col-md-11
         div.d-flex
           div.me-2 
-            strong = tweet.user.user_name
+            strong = tweet.user_name
           div.text-black-50
             = tweet.created_at.strftime('%Y/%m/%d %H:%M:%S')
         div.mb-2.me-2
           = safe_join(tweet.content.split("\n"), tag(:br))
-          / textarea.w-100 type="text" placeholder="いまどうしてる？" maxlength="140" style="border: none;"
         div.col-md-12.d-flex.me-2
           div.col-md-4
             a href="#"
