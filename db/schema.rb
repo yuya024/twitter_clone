@@ -43,12 +43,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_054549) do
   end
 
   create_table "follows", force: :cascade do |t|
-    t.bigint "user_id", null: false
-    t.integer "followee_id", null: false
+    t.bigint "follower_id"
+    t.bigint "followee_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["user_id", "followee_id"], name: "index_follows_on_user_id_and_followee_id", unique: true
-    t.index ["user_id"], name: "index_follows_on_user_id"
+    t.index ["followee_id"], name: "index_follows_on_followee_id"
+    t.index ["follower_id", "followee_id"], name: "index_follows_on_follower_id_and_followee_id", unique: true
+    t.index ["follower_id"], name: "index_follows_on_follower_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -102,6 +103,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_054549) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "follows", "users"
+  add_foreign_key "follows", "users", column: "followee_id"
+  add_foreign_key "follows", "users", column: "follower_id"
   add_foreign_key "tweets", "users"
 end

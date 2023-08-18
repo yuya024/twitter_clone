@@ -41,8 +41,8 @@ ActiveRecord::Base.transaction do
                                 filename: 'default_profile.jpg')
     end
 
-    Follow.find_or_create_by!(user_id: my_account.id, followee_id: user.id)
-    Follow.find_or_create_by!(user_id: user.id, followee_id: my_account.id)
+    Follow.find_or_create_by!(follower_id: my_account.id, followee_id: user.id)
+    Follow.find_or_create_by!(follower_id: user.id, followee_id: my_account.id)
     user.tweets.create!(content: content.sample)
   end
 end

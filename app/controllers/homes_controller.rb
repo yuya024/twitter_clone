@@ -5,11 +5,11 @@ class HomesController < ApplicationController
   def index; end
 
   def show
-    if params[:osusume].present?
+    if params[:is_recommend].present?
       @users_tweets = Tweet.includes(:user).order(created_at: :desc).page(params[:page])
-      @osusume = true
+      @is_recommend = true
     else
-      followees_id = current_user.follows.pluck(:followee_id)
+      followees_id = current_user.follower.pluck(:followee_id)
       @users_tweets = Tweet.includes(:user).where(user_id: followees_id).order(created_at: :desc).page(params[:page])
     end
   end

@@ -2,27 +2,15 @@ div.bg-white style="position: sticky; top: 71px; margin-right: -12px; margin-lef
   div.mx-2
     strong.fs-5 ホーム
   div.d-flex.mt-3.pb-2.border-bottom
-    - if @osusume.present?
-      div.col-md-6
-        div.d-flex.justify-content-center
-          = link_to 'おすすめ', home_path(current_user.id, osusume: true), class:'nav-link text-black text-center border-bottom border-3 border-info fw-bold'
-      div.col-md-6
-        div.d-flex.justify-content-center
-          = link_to 'フォロー中', home_path(current_user.id), class:'nav-link text-black text-center'
-    - else
-      div.col-md-6
-        div.d-flex.justify-content-center
-          = link_to 'おすすめ', home_path(current_user.id, osusume: true), class:'nav-link text-black text-center'
-      div.col-md-6
-        div.d-flex.justify-content-center
-          = link_to 'フォロー中', home_path(current_user.id), class:'nav-link text-black text-center border-bottom border-3 border-info fw-bold'
+    div.col-md-6
+      div.d-flex.justify-content-center
+        = link_to 'おすすめ', home_path(current_user.id, is_recommend: true), class:"nav-link text-black text-center #{@is_recommend.present? && "border-bottom border-3 border-info fw-bold"}"
+    div.col-md-6
+      div.d-flex.justify-content-center
+        = link_to 'フォロー中', home_path(current_user.id), class:"nav-link text-black text-center #{@is_recommend.blank? && "border-bottom border-3 border-info fw-bold"}"
 div.d-flex.mt-3.pb-2.border-bottom style="margin-right: -12px; margin-left: -12px;"
   div.col-md-1
-    - if current_user.profile_image.attached?
-      = image_tag current_user.profile_image.variant(resize_to_fill: [42, 42]).processed, class:'rounded-circle mx-1'
-    - else
-      a href="#" class="d-flex align-items-center"
-        img src="https://github.com/mdo.png" alt="" width="42" height="42" class="rounded-circle mx-1"
+    = link_to image_tag(current_user.profile_image_tag, class:'rounded-circle mx-1', width: '42', height: '42'), home_path(current_user.id)
   div.col-md-11
     form
       div.mb-2.me-2

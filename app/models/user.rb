@@ -13,7 +13,10 @@ class User < ApplicationRecord
   validates :uid, presence: true, uniqueness: { scope: :provider }
 
   has_many :tweets, dependent: :destroy
-  has_many :follows, dependent: :destroy
+  has_many :follower, class_name: 'Follow', foreign_key: 'follower_id', dependent: :destroy, inverse_of: :follower
+  has_many :followee, class_name: 'Follow', foreign_key: 'followee_id', dependent: :destroy, inverse_of: :followee
+  has_many :following_user, through: :follower, source: :followee
+  has_many :follower_user, through: :followee, source: :follower
   has_one_attached :profile_image
 
   DEFAULT_PHONE_NUMBER = '00000000000'
@@ -31,5 +34,13 @@ class User < ApplicationRecord
     user.skip_confirmation!
     user.save!
     user
+  end
+
+  def profile_image_tag
+    if profile_image.attached?
+      profile_image.variant(resize_to_fill: [42, 42]).processed
+    else
+      'https://github.com/mdo.png'
+    end
   end
 end
