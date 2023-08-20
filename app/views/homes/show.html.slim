@@ -1,4 +1,32 @@
-div.d-flex.justify-content-start
-  h1.mx-2 = "#{current_user.user_name}さん"
-  = link_to 'ログアウト', destroy_user_session_path, data: { "turbo-method": :delete }
-button.py-2.mb-2.btn.btn-outline-secondary.rounded-3.mx-2 つぶやき
+div.bg-white style="position: sticky; top: 71px; margin-right: -12px; margin-left: -12px;"
+  div.mx-2
+    strong.fs-5 ホーム
+  div.d-flex.mt-3.pb-2.border-bottom
+    div.col-md-6
+      div.d-flex.justify-content-center
+        = link_to 'おすすめ', home_path(current_user.id, is_recommend: true), class:"nav-link text-black text-center #{@is_recommend.present? && "border-bottom border-3 border-info fw-bold"}"
+    div.col-md-6
+      div.d-flex.justify-content-center
+        = link_to 'フォロー中', home_path(current_user.id), class:"nav-link text-black text-center #{@is_recommend.blank? && "border-bottom border-3 border-info fw-bold"}"
+div.d-flex.mt-3.pb-2.border-bottom style="margin-right: -12px; margin-left: -12px;"
+  div.col-md-1
+    = link_to image_tag(current_user.profile_image_tag, class:'rounded-circle mx-1', width: '42', height: '42'), home_path(current_user.id)
+  div.col-md-11
+    form
+      div.mb-2.me-2
+        textarea.w-100 type="text" placeholder="いまどうしてる？" maxlength="140" style="border: none;"
+      div.d-flex
+        div.col-md-6
+          a href="#"
+            svg.bi.pe-none.me-2[viewBox='0 0 30 30' width='30' height='30']
+              g
+                path d='M3 5.5C3 4.119 4.119 3 5.5 3h13C19.881 3 21 4.119 21 5.5v13c0 1.381-1.119 2.5-2.5 2.5h-13C4.119 21 3 19.881 3 18.5v-13zM5.5 5c-.276 0-.5.224-.5.5v9.086l3-3 3 3 5-5 3 3V5.5c0-.276-.224-.5-.5-.5h-13zM19 15.414l-3-3-5 5-3-3-3 3V18.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-3.086zM9.75 7C8.784 7 8 7.784 8 8.75s.784 1.75 1.75 1.75 1.75-.784 1.75-1.75S10.716 7 9.75 7z'
+        div.col-md-6.text-end
+          button.btn.btn-primary.btn-sm.me-2 type="submit" ツイートする
+
+= render partial: 'tweet', collection: @tweets
+
+div.d-flex.justify-content-center.mt-2
+  = paginate @tweets
+
+
