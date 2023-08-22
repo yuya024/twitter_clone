@@ -17,7 +17,10 @@ class User < ApplicationRecord
   has_many :followee, class_name: 'Follow', foreign_key: 'followee_id', dependent: :destroy, inverse_of: :followee
   has_many :following_user, through: :follower, source: :followee
   has_many :follower_user, through: :followee, source: :follower
+  has_many :favorites, dependent: :destroy, class_name: 'Favorite'
+  has_many :retweets, dependent: :destroy, class_name: 'Retweet'
   has_one_attached :profile_image
+  has_one_attached :header_image
 
   DEFAULT_PHONE_NUMBER = '00000000000'
   DEFAULT_PASSWORD_LENGTH = 10
@@ -33,14 +36,19 @@ class User < ApplicationRecord
     # メール認証をスキップする
     user.skip_confirmation!
     user.save!
+    user.default_image_setup
     user
   end
 
-  def profile_image_tag
-    if profile_image.attached?
-      profile_image.variant(resize_to_fill: [42, 42]).processed
-    else
-      'https://github.com/mdo.png'
-    end
+  def default_image_setup
+    profile_image.attach(io: File.open(Rails.root.join('app/assets/images/default_profile.jpg')),
+                         filename: 'default_profile.jpg')
+    header_image.attach(io: File.open(Rails.root.join('app/assets/images/default_header.jpg')),
+                        filename: 'default_header.jpg')
   end
+
+  def profile_image_tag(size:)
+    profile_image.variant(resize_to_fill: [size, size]).processed
+  end
+
 end

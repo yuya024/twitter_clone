@@ -10,7 +10,7 @@ div.bg-white style="position: sticky; top: 71px; margin-right: -12px; margin-lef
         = link_to 'フォロー中', home_path(current_user.id), class:"nav-link text-black text-center #{@is_recommend.blank? && "border-bottom border-3 border-info fw-bold"}"
 div.d-flex.mt-3.pb-2.border-bottom style="margin-right: -12px; margin-left: -12px;"
   div.col-md-1
-    = link_to image_tag(current_user.profile_image_tag, class:'rounded-circle mx-1', width: '42', height: '42'), home_path(current_user.id)
+    = link_to image_tag(current_user.profile_image_tag(size: 42), class:'rounded-circle mx-1', width: '42', height: '42'), profile_path(current_user.id)
   div.col-md-11
     form
       div.mb-2.me-2
