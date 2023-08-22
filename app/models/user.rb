@@ -50,5 +50,4 @@ class User < ApplicationRecord
   def profile_image_tag(size:)
     profile_image.variant(resize_to_fill: [size, size]).processed
   end
-
 end
