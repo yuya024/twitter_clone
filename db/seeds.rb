@@ -14,7 +14,7 @@ DEFAULT_INTRODUCTION = 'Happiness ChainでWebエンジニアになるために�
 DEFAULT_LOCATION = '東京 渋谷区'
 DEFAULT_WEBSITE = 'default.com'
 content = ['今日は暑い！', '今日は寒い！', '今日は涼しいな！', '今日は暖かいな！', "もくもく！\n今日も頑張ろう!"]
-reply = 'そうですね〜'
+comment = 'そうですね〜'
 
 my_account = User.find_or_initialize_by(email: 'main@example.com')
 my_account.uid = SecureRandom.uuid
@@ -57,7 +57,7 @@ ActiveRecord::Base.transaction do
     followee = User.includes(:tweets).find_by!(email: 'main@example.com')
     user.favorites.find_or_create_by!(tweet_id: followee.tweets.first.id)
     user.retweets.find_or_create_by!(tweet_id: followee.tweets.first.id)
-    user.tweets.find_or_create_by!(content: reply, reply_to: followee.tweets.first.id)
+    user.comments.find_or_create_by!(content: comment, tweet_id: followee.tweets.first.id)
   end
 end
 
@@ -84,11 +84,11 @@ ActiveRecord::Base.transaction do
     followee = User.includes(:tweets).find_by!(email: 'main@example.com')
     user.favorites.find_or_create_by!(tweet_id: followee.tweets.first.id)
     user.retweets.find_or_create_by!(tweet_id: followee.tweets.first.id)
-    user.tweets.find_or_create_by!(content: reply, reply_to: followee.tweets.first.id)
+    user.comments.find_or_create_by!(content: comment, tweet_id: followee.tweets.first.id)
   end
 end
 
 followee = User.includes(:tweets).find_by!(email: 'followee1@example.com')
 my_account.favorites.find_or_create_by!(tweet_id: followee.tweets.first.id)
 my_account.retweets.find_or_create_by!(tweet_id: followee.tweets.first.id)
-my_account.tweets.find_or_create_by!(content: reply, reply_to: followee.tweets.first.id)
+my_account.comments.find_or_create_by!(content: comment, tweet_id: followee.tweets.first.id)

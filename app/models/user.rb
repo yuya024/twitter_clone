@@ -19,6 +19,7 @@ class User < ApplicationRecord
   has_many :follower_user, through: :followee, source: :follower
   has_many :favorites, dependent: :destroy, class_name: 'Favorite'
   has_many :retweets, dependent: :destroy, class_name: 'Retweet'
+  has_many :comments, dependent: :destroy
   has_one_attached :profile_image
   has_one_attached :header_image
 
