@@ -17,7 +17,19 @@ class ProfilesController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    @user = current_user
+  end
+
+  def update
+    @user = current_user
+    if @user.update(user_params)
+      redirect_to profile_path(@user)
+    else
+      @error_messages = @user.errors.full_messages
+      render :edit, status: :unprocessable_entity
+    end
+  end
 
   private
 
@@ -37,5 +49,10 @@ class ProfilesController < ApplicationController
     favorite_tweet_ids = current_user.favorites.pluck(:tweet_id)
     @tweets = tweets.where(id: favorite_tweet_ids).recent.page(params[:page])
     @is_favorite = true
+  end
+
+  def user_params
+    params.require(:user).permit(:user_name, :introduction, :location, :website, :birthdate, :profile_image,
+                                 :header_image)
   end
 end
