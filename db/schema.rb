@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_10_054549) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_23_002813) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -42,6 +42,26 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_054549) do
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
+  create_table "comments", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "tweet_id", null: false
+    t.string "content", limit: 140
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tweet_id"], name: "index_comments_on_tweet_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "favorites", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "tweet_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tweet_id"], name: "index_favorites_on_tweet_id"
+    t.index ["user_id", "tweet_id"], name: "index_favorites_on_user_id_and_tweet_id", unique: true
+    t.index ["user_id"], name: "index_favorites_on_user_id"
+  end
+
   create_table "follows", force: :cascade do |t|
     t.bigint "follower_id"
     t.bigint "followee_id"
@@ -50,6 +70,16 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_054549) do
     t.index ["followee_id"], name: "index_follows_on_followee_id"
     t.index ["follower_id", "followee_id"], name: "index_follows_on_follower_id_and_followee_id", unique: true
     t.index ["follower_id"], name: "index_follows_on_follower_id"
+  end
+
+  create_table "retweets", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "tweet_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tweet_id"], name: "index_retweets_on_tweet_id"
+    t.index ["user_id", "tweet_id"], name: "index_retweets_on_user_id_and_tweet_id", unique: true
+    t.index ["user_id"], name: "index_retweets_on_user_id"
   end
 
   create_table "tasks", force: :cascade do |t|
@@ -63,7 +93,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_054549) do
   create_table "tweets", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "content", limit: 140
-    t.integer "replay_to"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["user_id"], name: "index_tweets_on_user_id"
@@ -94,6 +123,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_054549) do
     t.datetime "updated_at", null: false
     t.string "provider", default: "", null: false
     t.string "uid", default: "", null: false
+    t.string "introduction", limit: 160
+    t.string "location", limit: 30
+    t.string "website", limit: 100
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -103,7 +135,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_054549) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "comments", "tweets"
+  add_foreign_key "comments", "users"
+  add_foreign_key "favorites", "tweets"
+  add_foreign_key "favorites", "users"
   add_foreign_key "follows", "users", column: "followee_id"
   add_foreign_key "follows", "users", column: "follower_id"
+  add_foreign_key "retweets", "tweets"
+  add_foreign_key "retweets", "users"
   add_foreign_key "tweets", "users"
 end

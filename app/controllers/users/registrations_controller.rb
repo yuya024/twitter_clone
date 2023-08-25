@@ -14,6 +14,8 @@ module Users
     def create
       build_resource(sign_up_params)
       super
+
+      resource.default_image_setup
     end
 
     # GET /resource/edit
