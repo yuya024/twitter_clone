@@ -8,7 +8,7 @@ div.d-flex.align-items-center.bg-white.mb-3 style="position: sticky; top: 71px; 
     div プロフィールを編集
 
 div
-  = form_with model: @user, url: profile_path(current_user.id), data: { turbo_method: :post }, local: true do |f|
+  = form_with model: @user, url: profile_path(current_user.id), method: :put do |f|
     div.form-floating.mb-2
       = f.text_field :user_name, class: "form-control rounded-3", placeholder: "ユーザー名(最大50文字)"
       = f.label :user_name, "ユーザー名(最大50文字)"

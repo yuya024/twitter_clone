@@ -13,7 +13,8 @@ class User < ApplicationRecord
   validates :uid, presence: true, uniqueness: { scope: :provider }
   validates :introduction, length: { maximum: 160 }
   validates :location, length: { maximum: 30 }
-  validates :website, length: { maximum: 100 }
+  VALID_WEBSITE_URL_REGEX = /\A.+(\.com|\.net|\.org)\z/
+  validates :website, length: { maximum: 100 }, format: { with: VALID_WEBSITE_URL_REGEX }
 
   has_many :tweets, dependent: :destroy
   has_many :follower, class_name: 'Follow', foreign_key: 'follower_id', dependent: :destroy, inverse_of: :follower
