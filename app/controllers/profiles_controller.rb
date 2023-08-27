@@ -22,16 +22,31 @@ class ProfilesController < ApplicationController
   end
 
   def update
-    @user = current_user
-    if @user.update(user_params)
-      redirect_to profile_path(@user)
+    if update_profile
+      update_profile_image
+      redirect_to profile_path(current_user)
     else
-      @error_messages = @user.errors.full_messages
+      @user = User.new(user_params)
+      @error_messages = current_user.errors.full_messages
       render :edit, status: :unprocessable_entity
     end
   end
 
   private
+
+  def update_profile
+    current_user.update(user_name: params[:user][:user_name],
+                        introduction: params[:user][:introduction],
+                        location: params[:user][:location],
+                        website: params[:user][:website],
+                        birthdate: params[:user][:birthdate])
+  end
+
+  # validationエラーに引っかかった際に、ActiveStorage::FileNotFoundErrorを回避するために画像だけ更新を分ける
+  def update_profile_image
+    current_user.profile_image.attach(params[:user][:profile_image]) if params[:user][:profile_image].present?
+    current_user.header_image.attach(params[:user][:header_image]) if params[:user][:header_image].present?
+  end
 
   def tweets_by_comment(tweets)
     comment_tweet_ids = current_user.comments.pluck(:tweet_id)
