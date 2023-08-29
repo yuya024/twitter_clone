@@ -36,4 +36,10 @@ html
           - elsif alert.present?
             p.alert.alert-danger.mb-0 = alert
 
+          - if @error_messages.present?
+            div.alert.alert-danger.pb-0
+              ul
+                - @error_messages.each do |message|
+                  li = message
+
           = yield

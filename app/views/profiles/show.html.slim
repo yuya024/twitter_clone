@@ -10,7 +10,7 @@ div
       div style='margin-top: -60px'
         = image_tag(current_user.profile_image_tag(size: 120), class: 'rounded-circle border border-white border-3')
       div.mt-3
-        = link_to 'プロフィールを編集', profile_path(current_user.id), class: 'fw-bold text-black btn btn-light border border-2'
+        = link_to 'プロフィールを編集', edit_profile_path(current_user.id), class: 'fw-bold text-black btn btn-light border border-2'
     div.fw-bold.fs-4
       = current_user.user_name
     - if current_user.introduction.present?

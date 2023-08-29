@@ -1,2 +1,38 @@
-h1 Profiles#edit
-p Find me in app/views/profiles/edit.html.slim
+div.d-flex.align-items-center.bg-white.mb-3 style="position: sticky; top: 71px; margin-right: -12px; margin-left: -12px;"
+  div
+    = link_to profile_path(current_user.id)
+      svg.mx-2[viewBox='0 0 24 24' width='20' height='20' style='fill: rgba(0, 0, 0 ,0.5)']
+        g
+          path d='M7.414 13l5.043 5.04-1.414 1.42L3.586 12l7.457-7.46 1.414 1.42L7.414 11H21v2H7.414z'
+  div.fw-bold.fs-4.mx-2
+    div プロフィールを編集
+
+div
+  = form_with model: @user, url: profile_path(current_user.id), method: :put do |f|
+    div.form-floating.mb-2
+      = f.text_field :user_name, class: "form-control rounded-3", placeholder: "ユーザー名(最大50文字)"
+      = f.label :user_name, "ユーザー名(最大50文字)"
+    div.form-floating.mb-2
+      = f.text_area :introduction, style: "height :100px", class: "form-control rounded-3", placeholder: "自己紹介(最大160文字)"
+      = f.label :introduction, "自己紹介(最大160文字)"
+    div.form-floating.mb-2
+      = f.text_field :location, class: "form-control rounded-3", placeholder: "場所(最大30文字)"
+      = f.label :location, "場所(最大30文字)"
+    div.form-floating.mb-2
+      = f.text_field :website, class: "form-control rounded-3", placeholder: "ウェブサイト(最大100文字)"
+      = f.label :website, "ウェブサイト(最大100文字)"
+    div.form-floating.mb-2
+      = f.date_field :birthdate, class: "form-control rounded-3", placeholder: "誕生日"
+      = f.label :birthdate, "誕生日"
+    div.mb-2.form-control.rounded-3
+      div
+        = f.label :profile_image, "アイコン"
+      div
+        = f.file_field :profile_image, placeholder: "アイコン"
+    div.mb-2.form-control.rounded-3
+      div
+        = f.label :header_image, "ヘッダー"
+      div
+        = f.file_field :header_image, placeholder: "ヘッダー"
+    div.d-flex.justify-content-end
+      = f.submit "保存", class: "button btn btn-primary btn-lg"

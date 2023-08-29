@@ -7,7 +7,7 @@ Rails.application.routes.draw do
     omniauth_callbacks: 'users/omniauth_callbacks'
   }
   resources :homes, only: %i[index show]
-  resources :profiles, only: %i[show edit]
+  resources :profiles, only: %i[show edit update]
   root to: 'homes#index'
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
   # resources :tasks

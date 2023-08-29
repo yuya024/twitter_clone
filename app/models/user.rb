@@ -7,10 +7,14 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable,
          :confirmable, :lockable, :timeoutable, :trackable, :omniauthable, omniauth_providers: %i[github]
 
-  validates :user_name, presence: true
+  validates :user_name, presence: true, length: { maximum: 50 }
   validates :phone_number, presence: true
   validates :birthdate, presence: true
   validates :uid, presence: true, uniqueness: { scope: :provider }
+  validates :introduction, length: { maximum: 160 }
+  validates :location, length: { maximum: 30 }
+  VALID_WEBSITE_URL_REGEX = /\A.+(\.com|\.net|\.org)\z/
+  validates :website, length: { maximum: 100 }, format: { with: VALID_WEBSITE_URL_REGEX }
 
   has_many :tweets, dependent: :destroy
   has_many :follower, class_name: 'Follow', foreign_key: 'follower_id', dependent: :destroy, inverse_of: :follower
