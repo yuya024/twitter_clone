@@ -9,6 +9,9 @@ div.d-flex.mt-3.pb-2.border-bottom style="margin-right: -12px; margin-left: -12p
           = tweet.created_at.strftime('%Y/%m/%d %H:%M:%S')
       div.mb-2.me-2
         = safe_join(tweet.content.split("\n"), tag(:br))
+      - if tweet.image.attached?
+        div
+          = image_tag tweet.image.variant(resize_to_fill: [450, 150]).processed, class:'border rounded'
       div.col-md-12.d-flex.me-2
         div.col-md-4
           a.nav-link href="#"
