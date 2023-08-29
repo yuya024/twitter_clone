@@ -12,19 +12,22 @@ div.d-flex.mt-3.pb-2.border-bottom style="margin-right: -12px; margin-left: -12p
   div.col-md-1
     = link_to image_tag(current_user.profile_image_tag(size: 42), class:'rounded-circle mx-1', width: '42', height: '42'), profile_path(current_user.id)
   div.col-md-11
-    form
+    = form_with model: @tweet, url: tweets_path, local: true, data: { turbo_method: :post, controller: 'tweet', tweet_character_count_value: 140 } do |f|
       div.mb-2.me-2
-        textarea.w-100 type="text" placeholder="いまどうしてる？" maxlength="140" style="border: none;"
+        = f.text_area :content, data: { tweet_target: 'content', action: 'keyup->tweet#change' }, class:'w-100', placeholder:'いまどうしてる？', maxlength:'140', style:'border: none;'
       div.d-flex
-        div.col-md-6
-          a href="#"
-            svg.bi.pe-none.me-2[viewBox='0 0 30 30' width='30' height='30']
+        div.col-md-8
+          label
+            svg.bi.pe-none[viewBox='0 0 30 30' width='30' height='30']
               g
                 path d='M3 5.5C3 4.119 4.119 3 5.5 3h13C19.881 3 21 4.119 21 5.5v13c0 1.381-1.119 2.5-2.5 2.5h-13C4.119 21 3 19.881 3 18.5v-13zM5.5 5c-.276 0-.5.224-.5.5v9.086l3-3 3 3 5-5 3 3V5.5c0-.276-.224-.5-.5-.5h-13zM19 15.414l-3-3-5 5-3-3-3 3V18.5c0 .276.224.5.5.5h13c.276 0 .5-.224.5-.5v-3.086zM9.75 7C8.784 7 8 7.784 8 8.75s.784 1.75 1.75 1.75 1.75-.784 1.75-1.75S10.716 7 9.75 7z'
-        div.col-md-6.text-end
-          button.btn.btn-primary.btn-sm.me-2 type="submit" ツイートする
+            = f.file_field :image, data: { tweet_target: 'image', action: 'change->tweet#image' }, style:'display:none;'
+            span data-tweet-target='outputImageName'
+        div.col-md-4.text-end
+          span data-tweet-target='outputCount'
+          = f.submit 'ツイートする', class:'btn btn-primary btn-sm mx-2'
 
-= render partial: 'tweet', collection: @tweets
+= render partial: 'homes/tweet', collection: @tweets
 
 div.d-flex.justify-content-center.mt-2
   = paginate @tweets
