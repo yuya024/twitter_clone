@@ -8,9 +8,7 @@ class CommentsController < ApplicationController
   def create
     @comment = current_user.comments.new(comment_params)
     if params[:comment][:content].empty? && params[:comment][:image].blank?
-      @error_messages = ['文章か写真を投稿してください']
-      set_tweet_detail
-      render 'tweets/show', status: :unprocessable_entity
+      redirect_to tweet_path(params[:tweet_id]), status: :unprocessable_entity, alert: '文章か写真を投稿してください'
     elsif (created_comment = Comment.create_comment(user: current_user, params: comment_params,
                                                     tweet_id: params[:tweet_id])).is_a?(Comment)
       flash[:notice] = 'コメントを返信しました'
@@ -25,7 +23,7 @@ class CommentsController < ApplicationController
   private
 
   def comment_params
-    params.require(:comment).permit(:content, :image, :tweet_id)
+    params.require(:comment).permit(:content, :image).merge(tweet_id: params[:tweet_id])
   end
 
   def set_tweet_detail

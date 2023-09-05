@@ -20,7 +20,7 @@ class TweetsController < ApplicationController
 
   def show
     @tweet = Tweet.includes(:user, :favorites, :retweets, :comments).find(params[:id])
-    @comment = Comment.new
+    @comment = @tweet.comments.new
     @comments = Comment.includes(:user).where(tweet_id: params[:id]).recent.page(params[:page])
   end
 
