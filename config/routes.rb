@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   }
   resources :homes, only: %i[index show]
   resources :profiles, only: %i[show edit update]
-  resources :tweets, only: %i[create]
+  resources :tweets, only: %i[create show] do
+    resources :comments, only: %i[index create]
+  end
   root to: 'homes#index'
   mount LetterOpenerWeb::Engine, at: '/letter_opener' if Rails.env.development?
   # resources :tasks

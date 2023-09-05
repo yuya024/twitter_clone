@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class TweetsController < ApplicationController
+  before_action :sigin_in_required, only: %i[show]
+
   def create
     @tweet = current_user.tweets.new(tweet_params)
     if params[:tweet][:content].empty? && params[:tweet][:image].blank?
@@ -14,6 +16,12 @@ class TweetsController < ApplicationController
       set_followee_tweets
       render 'homes/show', status: :unprocessable_entity
     end
+  end
+
+  def show
+    @tweet = Tweet.includes(:user, :favorites, :retweets, :comments).find(params[:id])
+    @comment = @tweet.comments.new
+    @comments = Comment.includes(:user).where(tweet_id: params[:id]).recent.page(params[:page])
   end
 
   private
