@@ -10,9 +10,9 @@ class HomesController < ApplicationController
       @is_recommend = true
     else
       followee_ids = current_user.follower.pluck(:followee_id)
-      user_ids = followee_ids.dup << current_user.id
-      @tweets = Tweet.includes(:user, :favorites, :retweets,
-                               :comments).where(user_id: user_ids).recent.page(params[:page])
+      followee_ids_with_userself = followee_ids.dup << current_user.id
+      @tweets = current_user.following_tweets_with_retweets(followee_ids_with_userself: followee_ids_with_userself)
+                            .page(params[:page])
     end
     @tweet = current_user.tweets.new
   end

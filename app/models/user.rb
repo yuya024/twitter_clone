@@ -55,4 +55,17 @@ class User < ApplicationRecord
   def profile_image_tag(size:)
     profile_image.variant(resize_to_fill: [size, size]).processed
   end
+
+  def following_tweets_with_retweets(followee_ids_with_userself:)
+    tweet = Tweet.joins("LEFT OUTER JOIN (SELECT tweet_id, MAX(created_at) AS latest_created_at FROM retweets
+                       GROUP BY tweet_id) AS latest_retweets ON tweets.id = latest_retweets.tweet_id
+                       LEFT OUTER JOIN retweets ON latest_retweets.tweet_id = retweets.tweet_id AND
+                       latest_retweets.latest_created_at = retweets.created_at")
+                 .select("tweets.*, retweets.user_id AS retweet_user_id,
+                          (SELECT user_name FROM users WHERE id = retweets.user_id) AS retweets_user_name")
+    tweet.where(user_id: followee_ids_with_userself)
+         .or(tweet.where(id: Retweet.where(user_id: followee_ids_with_userself).distinct.pluck(:tweet_id)))
+         .preload(:user, :comments, :retweets, :favorites)
+         .order(Arel.sql('COALESCE(retweets.created_at, tweets.created_at) desc'))
+  end
 end
