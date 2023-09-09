@@ -6,7 +6,7 @@ class HomesController < ApplicationController
 
   def show
     if params[:is_recommend].present?
-      @tweets = Tweet.includes(:user, :favorites, :retweets, :comments).recent.page(params[:page])
+      @tweets = Tweet.tweets_with_retweets.page(params[:page])
       @is_recommend = true
     else
       followee_ids = current_user.follower.pluck(:followee_id)
