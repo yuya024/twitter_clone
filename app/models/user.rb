@@ -68,4 +68,8 @@ class User < ApplicationRecord
          .preload(:user, :comments, :retweets, :favorites)
          .order(Arel.sql('COALESCE(retweets.created_at, tweets.created_at) desc'))
   end
+
+  def followed_by?(followee_id:)
+    follower.where(followee_id: followee_id).exists?
+  end
 end

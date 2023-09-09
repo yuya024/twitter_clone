@@ -15,6 +15,7 @@ class ProfilesController < ApplicationController
       @tweets = tweets.where(user_id: current_user.id).recent.page(params[:page])
       @is_tweet = true
     end
+    @is_profile_view = true
   end
 
   def edit
