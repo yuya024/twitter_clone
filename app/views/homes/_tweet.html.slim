@@ -20,7 +20,7 @@ div.d-flex.mt-3.pb-2.border-bottom style="margin-right: -12px; margin-left: -12p
       div
         = image_tag tweet.image.variant(resize_to_fill: [450, 150]).processed, class:'border rounded'
     div.col-md-12.d-flex.me-2
-      div.col-md-4
+      div.col-md-3
         a.nav-link href="#"
           div.d-flex
             div
@@ -32,7 +32,9 @@ div.d-flex.mt-3.pb-2.border-bottom style="margin-right: -12px; margin-left: -12p
               - unless tweet.comments.size.zero?
                 span.text-black-50 style='font-size: 14px'
                   = tweet.comments.size
-      div.col-md-4
+      div.col-md-3
         = render partial: 'homes/retweet', locals: { tweet: tweet }
-      div.col-md-4
+      div.col-md-3
         = render partial: 'homes/favorite', locals: { tweet: tweet }
+      div.col-md-3
+        = render partial: 'homes/bookmark', locals: { tweet: tweet }
