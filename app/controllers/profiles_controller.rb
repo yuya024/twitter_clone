@@ -4,7 +4,7 @@ class ProfilesController < ApplicationController
   before_action :sigin_in_required, only: %i[show edit]
 
   def show
-    tweets = Tweet.includes(:user, :favorites, :retweets, :comments)
+    tweets = Tweet.includes(:user, :favorites, :retweets, :comments, :bookmarks)
     if params[:is_comment].present?
       tweets_by_comment(tweets)
     elsif params[:is_retweet].present?

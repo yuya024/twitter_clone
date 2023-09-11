@@ -4,6 +4,7 @@ class Tweet < ApplicationRecord
   belongs_to :user
   has_many :favorites, class_name: 'Favorite', dependent: :destroy
   has_many :retweets, class_name: 'Retweet', dependent: :destroy
+  has_many :bookmarks, class_name: 'Bookmark', dependent: :destroy
   has_many :comments, dependent: :destroy
   delegate :user_name, to: :user, allow_nil: true
   scope :recent, -> { order(created_at: :desc) }
@@ -17,7 +18,7 @@ class Tweet < ApplicationRecord
                         (SELECT user_name FROM users WHERE id = retweets.user_id) AS retweets_user_name")
     tweet.where("NOT EXISTS(SELECT 1 FROM retweets sub
                 WHERE retweets.tweet_id = sub.tweet_id AND retweets.created_at < sub.created_at)")
-         .preload(:user, :comments, :retweets, :favorites)
+         .preload(:user, :comments, :retweets, :favorites, :bookmarks)
          .order(Arel.sql('COALESCE(retweets.created_at, tweets.created_at) desc'))
   end
 
@@ -36,5 +37,9 @@ class Tweet < ApplicationRecord
 
   def retweeted_by?(user)
     retweets.where(user_id: user.id).exists?
+  end
+
+  def bookmarked_by?(user)
+    bookmarks.where(user_id: user.id).exists?
   end
 end

@@ -23,6 +23,7 @@ class User < ApplicationRecord
   has_many :follower_user, through: :followee, source: :follower
   has_many :favorites, dependent: :destroy, class_name: 'Favorite'
   has_many :retweets, dependent: :destroy, class_name: 'Retweet'
+  has_many :bookmarks, dependent: :destroy, class_name: 'Bookmark'
   has_many :comments, dependent: :destroy
   has_one_attached :profile_image
   has_one_attached :header_image
@@ -65,7 +66,7 @@ class User < ApplicationRecord
          .or(tweet.where(id: Retweet.where(user_id: followee_ids_with_userself).distinct.pluck(:tweet_id)))
          .where("NOT EXISTS(SELECT 1 FROM retweets sub
                 WHERE retweets.tweet_id = sub.tweet_id AND retweets.created_at < sub.created_at)")
-         .preload(:user, :comments, :retweets, :favorites)
+         .preload(:user, :comments, :retweets, :favorites, :bookmarks)
          .order(Arel.sql('COALESCE(retweets.created_at, tweets.created_at) desc'))
   end
 
