@@ -10,6 +10,8 @@ Rails.application.routes.draw do
   resources :profiles, only: %i[show edit update]
   resources :follows, only: %i[create]
   resources :bookmarks, only: %i[index]
+  resources :rooms, only: %i[index create show]
+  resources :messages, only: %i[create]
   resources :tweets, only: %i[create show] do
     resources :comments, only: %i[index create]
     resource :favorite, only: %i[create destroy]
