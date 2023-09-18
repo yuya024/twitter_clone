@@ -1,0 +1,9 @@
+div.d-flex
+  div.col-md-5.border-end style='height: 90vh'
+    div.bg-white style="position: sticky; top: 71px; margin-left: -12px;"
+      div.mx-2
+        strong.fw-bold.fs-5 メッセージ
+    = render partial: 'rooms/room', collection: @rooms
+
+  div.col-md-7.d-flex.justify-content-center.align-items-center
+      div.fs-4.fw-bold メッセージを選択

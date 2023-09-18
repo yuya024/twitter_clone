@@ -17,6 +17,9 @@ class User < ApplicationRecord
   validates :website, length: { maximum: 100 }, format: { with: VALID_WEBSITE_URL_REGEX }
 
   has_many :tweets, dependent: :destroy
+  has_many :rooms, through: :user_rooms
+  has_many :user_rooms, dependent: :destroy
+  has_many :messages, dependent: :destroy
   has_many :follower, class_name: 'Follow', foreign_key: 'follower_id', dependent: :destroy, inverse_of: :follower
   has_many :followee, class_name: 'Follow', foreign_key: 'followee_id', dependent: :destroy, inverse_of: :followee
   has_many :following_user, through: :follower, source: :followee
@@ -72,5 +75,15 @@ class User < ApplicationRecord
 
   def followed_by?(followee_id:)
     follower.where(followee_id: followee_id).exists?
+  end
+
+  def room_list
+    UserRoom.joins("INNER JOIN users on user_rooms.user_id = users.id AND users.id IN
+                   (SELECT user_rooms.user_id FROM user_rooms WHERE user_rooms.user_id != #{id}) AND
+                   user_rooms.room_id IN (SELECT user_rooms.room_id FROM user_rooms WHERE user_rooms.user_id = #{id})
+                   LEFT OUTER JOIN (SELECT max(created_at) as latest_message_created, room_id FROM messages
+                   group by room_id) messages on user_rooms.room_id = messages.room_id")
+            .select('user_rooms.*, users.id, users.user_name, latest_message_created')
+            .order(Arel.sql('COALESCE(latest_message_created, user_rooms.created_at) desc'))
   end
 end

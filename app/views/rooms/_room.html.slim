@@ -1,0 +1,10 @@
+div.mt-3.pb-2 style='margin-left: -12px;' = link_to room_path(room.room_id, user_id: room.user.id), class:'text-black', style:'text-decoration: none'
+  div.d-flex
+    div.col-md-2
+      = image_tag room.user.profile_image.variant(resize_to_fill: [40, 40]).processed, class:'rounded-circle ms-1'
+    div.col-md-10
+      div.d-flex.justify-content-between.mx-1
+        div.me-2
+          strong = room.user.user_name
+        div.text-black-50 style='font-size: 15px'
+          = room.latest_message_created.present? ? room.latest_message_created.strftime('%Y年%m月%d日'): room.created_at.strftime('%Y年%m月%d日')

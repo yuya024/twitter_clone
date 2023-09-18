@@ -12,6 +12,8 @@ ja:
         content: 文章
       comment:
         content: 文章
+      message:
+        content: 文章
   date:
     abbr_day_names:
     - 日
