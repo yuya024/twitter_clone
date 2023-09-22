@@ -20,6 +20,7 @@ class User < ApplicationRecord
   has_many :rooms, through: :user_rooms
   has_many :user_rooms, dependent: :destroy
   has_many :messages, dependent: :destroy
+  has_many :notifications, dependent: :destroy
   has_many :follower, class_name: 'Follow', foreign_key: 'follower_id', dependent: :destroy, inverse_of: :follower
   has_many :followee, class_name: 'Follow', foreign_key: 'followee_id', dependent: :destroy, inverse_of: :followee
   has_many :following_user, through: :follower, source: :followee

@@ -1,0 +1,14 @@
+div.bg-white.border-bottom.pb-2 style="position: sticky; top: 71px; margin-left: -12px; margin-right: -12px;"
+  div.mx-2
+    strong.fw-bold.fs-5 通知
+
+div.col-md-9.border-end style='height: 85vh'
+  - if @notifications.present?
+    - @notifications.each do |notification|
+      div.border-bottom.pt-2.pb-2.px-2 style='margin-left: -12px;'
+        = "#{notification.subject.user_name}さんが#{notification.human_attribute_enum(:action_type)}"
+    div.d-flex.justify-content-center.mt-2
+      = paginate @notifications
+  - else 
+    div.d-flex.justify-content-center.align-items-center
+      div.fs-4.strong 通知はありません

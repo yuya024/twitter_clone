@@ -12,6 +12,7 @@ Rails.application.routes.draw do
   resources :bookmarks, only: %i[index]
   resources :rooms, only: %i[index create show]
   resources :messages, only: %i[create]
+  resources :notifications, only: %i[index]
   resources :tweets, only: %i[create show] do
     resources :comments, only: %i[index create]
     resource :favorite, only: %i[create destroy]
