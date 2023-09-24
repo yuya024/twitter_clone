@@ -14,7 +14,7 @@ class User < ApplicationRecord
   validates :introduction, length: { maximum: 160 }
   validates :location, length: { maximum: 30 }
   VALID_WEBSITE_URL_REGEX = /\A.+(\.com|\.net|\.org)\z/
-  validates :website, length: { maximum: 100 }, format: { with: VALID_WEBSITE_URL_REGEX }
+  validates :website, length: { maximum: 100 }, format: { with: VALID_WEBSITE_URL_REGEX }, if: :website?
 
   has_many :tweets, dependent: :destroy
   has_many :rooms, through: :user_rooms
@@ -48,6 +48,10 @@ class User < ApplicationRecord
     user.save!
     user.default_image_setup
     user
+  end
+
+  def website?
+    website.present?
   end
 
   def default_image_setup
