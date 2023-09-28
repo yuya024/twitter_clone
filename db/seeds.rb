@@ -53,11 +53,13 @@ ActiveRecord::Base.transaction do
 
     Follow.find_or_create_by!(follower_id: my_account.id, followee_id: user.id)
     Follow.find_or_create_by!(follower_id: user.id, followee_id: my_account.id)
-    user.tweets.create!(content: content.sample)
+    followee_tweet = user.tweets.create!(content: content.sample)
     followee = User.includes(:tweets).find_by!(email: 'main@example.com')
     user.favorites.find_or_create_by!(tweet_id: followee.tweets.first.id)
     user.retweets.find_or_create_by!(tweet_id: followee.tweets.first.id)
     user.comments.find_or_create_by!(content: comment, tweet_id: followee.tweets.first.id)
+
+    my_account.favorites.find_or_create_by!(tweet_id: followee_tweet.id)
   end
 end
 
@@ -80,15 +82,12 @@ ActiveRecord::Base.transaction do
     user.header_image.attach(io: File.open(Rails.root.join('app/assets/images/default_header.jpg')),
                              filename: 'default_header.jpg')
 
-    user.tweets.create!(content: content.sample)
+    recommend_tweet = user.tweets.create!(content: content.sample)
     followee = User.includes(:tweets).find_by!(email: 'main@example.com')
     user.favorites.find_or_create_by!(tweet_id: followee.tweets.first.id)
     user.retweets.find_or_create_by!(tweet_id: followee.tweets.first.id)
     user.comments.find_or_create_by!(content: comment, tweet_id: followee.tweets.first.id)
+
+    my_account.favorites.find_or_create_by!(tweet_id: recommend_tweet.id)
   end
 end
-
-followee = User.includes(:tweets).find_by!(email: 'followee1@example.com')
-my_account.favorites.find_or_create_by!(tweet_id: followee.tweets.first.id)
-my_account.retweets.find_or_create_by!(tweet_id: followee.tweets.first.id)
-my_account.comments.find_or_create_by!(content: comment, tweet_id: followee.tweets.first.id)

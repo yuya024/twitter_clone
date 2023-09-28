@@ -14,6 +14,10 @@ ja:
         content: 文章
       message:
         content: 文章
+      notification/action_type:
+        favorited_the_tweet: ツイートにいいねしました
+        retweeted_the_tweet: ツイートをリツイートしました
+        commented_the_tweet: ツイートにコメントしました
   date:
     abbr_day_names:
     - 日
