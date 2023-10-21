@@ -22,5 +22,12 @@ FactoryBot.define do
     trait :user_name_characters_51 do
       user_name { SecureRandom.alphanumeric(51) }
     end
+
+    trait :logined do
+      after(:create) do |user|
+        user.default_image_setup
+        user.confirm
+      end
+    end
   end
 end
